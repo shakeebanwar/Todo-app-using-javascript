@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<script src="index.js"></script>
+    <title>Todo List</title>
+  </head>
+  <body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">Todo List</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">About</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          list
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">contact</a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
+
+
+<div class="container my-4">
+
+<h2 class="text-center">Todo List</h2>
+
+
+  <div class="form-group">
+    <label for="exampleInputEmail1">Title</label>
+    <input type="text" class="form-control" id="title" aria-describedby="emailHelp" required>
+    <small id="emailHelp" class="form-text text-muted">Add Items in list</small>
+  </div>
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea class="form-control" name="" id="description" cols="30" rows="3" required></textarea>
+   
+  </div>
+  
+  <button type="submit" class="btn btn-primary" id="add">Add to List</button>
+  <button type="submit" class="btn btn-primary" id="clear" onclick="clearstr()">Clear</button>
+
+
+<div id="items" class="my-4">
+<h2>Your items</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      
+      <th scope="col">Serial-no</th>
+      <th scope="col">Item-Title</th>
+      <th scope="col">Item-Description</th>
+      <th scope="col">Action</th>
+      
+    </tr>
+  </thead>
+  <tbody id="tableBody">
+   
+    
+  </tbody>
+</table>
+
+</div>
+
+</div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+
+
+  <script>
+    add=document.getElementById("add"); //sb sa phala humna add list ka button ko get kiya
+    add.addEventListener('click',getupdate);//get karna ka baad us par ak event set kardiya click ka means jb bi koi add list ka button pa click karaga tu event fire hoga aur getupdate ka function call hojae ga
+    update(); //local storage ma jo phla sa ha wo aye ga 
+    
+    
+    //Insert into list
+    function getupdate(){
+      console.log("updating...")
+      tit=document.getElementById('title').value;//sb sa phala user jo title aur description dala ga hum usko uski value ka zariya get karwaye ga
+      desc=document.getElementById('description').value;
+        if(localStorage.getItem("itemsJson")==null){ //ya if ki condition simple dakh rahi ha ka agr localstorage bilkol empty ha tu if run hoga warna else
+    
+          itemsJsonArray=[]; //if ka true ka baad sb sa phala ak empty array bana ga
+          itemsJsonArray.push([tit,desc]); //aur array ma hum array ka push method ko use karaga aur apni title aur description ki value usma daal daga
+          localStorage.setItem('itemsJson',JSON.stringify(itemsJsonArray));// is sa phala step ma simple ak array bana kar us ma value tu daal di ha lakin abhi array ko json ma convert karaga q ka huma abhi isko local storage ma save karwana ha
+    //yaha json.stringify isliye use hoa q ka array object ha hum jb is localstorage ma save karwaye tu phala string ma convert karaga
+        }
+        else{
+          itemsJsonArrayStr = localStorage.getItem('itemsJson'); //else ki condition jb run hogi jb phala sa localstorage ma kuch save ho lakin yaha per ak baat ka khayal rakhna ha jo phala sa save ha wo ak string q ka humna insert list karta wakt usko ak string bana kar save kiya tha phala us string ko object banana hoga taka push kar saka warna string ka push method nhi ha 
+          itemsJsonArray=JSON.parse(itemsJsonArrayStr);//yaha apna jo string get ki thi usko dobara object bana diya parse ki help sa
+          itemsJsonArray.push([tit,desc]);//ab is object ma item insert karaga 
+          localStorage.setItem('itemsJson',JSON.stringify(itemsJsonArray));//yaha same phala ki tarha hoa ha jb array ma push hogaya ha tu stringify sa usko dobara string banaye ga taka local storage ma json bana kar save kara
+    
+        }
+
+        update(); //ab jasa hi koi chez save hogaye tu real time pa show bi tu karwana insert hoe wa ko
+    
+    }
+//end insert into list
+
+//update function this function show all list content in a localstorage
+    function update(){
+      if(localStorage.getItem("itemsJson")==null){ //same upar wali condition ha agar localstorage ma kuch nhi hoa tu chalaga
+    
+        itemsJsonArray=[]; //empty array 
+        localStorage.setItem('itemsJson',JSON.stringify(itemsJsonArray));//empty array ko string ma convert kar ka localstorage ma save kardaga
+  
+      //basically ya condition isliye lagaye ha ka agr user ka local storage ma kuch na tu ak array empty bana ka daal do taka user ko kuch show na ho
+      
+      }
+
+      else{
+        itemsJsonArrayStr = localStorage.getItem('itemsJson'); //localstorage ma jo bi save ha wo string ki form ma ha tu parse karwa kar uska object banana hoga
+        itemsJsonArray=JSON.parse(itemsJsonArrayStr); //string to object
+      
+      }
+    
+   
+      //populate the table
+
+      let tablebody=document.getElementById('tableBody');//upar humna ak table banaya aur usko id ki behalf pa fetch karwaya
+      let str = "";
+      itemsJsonArray.forEach((element,index)=>{//upar humna string ko object banaya ha ab us object pa loop chalaya taka sb elements get kar ka show karwaye
+        //loop ka first argument element daga second uska index
+        //yaha str ma backticks ki help sa data show karway ha
+        //index+1 isliye taka count 1 sa start ho
+        //delete ka button pa humna ak function deleted call karwaya jo index laye ga aur index ki help sa hum delete karaga
+        str+=`
+        <tr>
+          <th scope="row">${index+1}</th>
+          <td>${element[0]}</td>
+          <td>${element[1]}</td>
+          <td><button class="btn btn-danger" onclick="deleted(${index})">Delete</button></td>
+          
+        </tr>
+      `;
+
+      });
+      tablebody.innerHTML=str;//jo table banaya ha wo empty ha us ka andar ya html daal daga
+    }
+
+
+    // End Update
+
+
+ 
+
+   
+   //Delete Items in a list
+    function deleted(itemIndex){
+
+      console.log("Delete",itemIndex);
+      itemsJsonArrayStr = localStorage.getItem('itemsJson'); //abhi ya string ya tu parse karna lazmi ha
+      itemsJsonArray=JSON.parse(itemsJsonArrayStr);//convert string to array q ka array ka index ki help sa delete karaga 
+      //Delte Item index element from the array
+      itemsJsonArray.splice(itemIndex,1)  //method of array to delete the elment with respect to index aur second argument 1 means ak element delete karna ha ak index ki behalf pa
+      localStorage.setItem('itemsJson',JSON.stringify(itemsJsonArray));//delete ka baad jo element bach gaye ha usko local storage ma daal daga string bana ka warna delete nhi hoga 
+      update();//delete ka baad jo element bach gaye usko show karwaye ga
+
+    }
+
+    //End Delete
+
+
+    //Clear all the item in a list
+    function clearstr(){
+if (confirm("Do you really Clear")){ //ya condition isliye ka agar user clear kara tu ak baar karla us sa
+      console.log("Clear the storage")
+      localStorage.clear();
+      update();
+    }
+  }
+
+  //End 
+  </script>
+</html>
